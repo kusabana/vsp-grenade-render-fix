@@ -42,7 +42,7 @@ The `m_flSpawnTime` variable is set by the client. Since the goal is to resolve 
 
 While `m_PlayerAnimState` might technically be usable, it would require interfering with the animation playback.
 
-This leaves `m_hThrower`. Initially, i considered placing a hook where the server sends the netvar updates to players, and updating the variable for each player to fulfill the local player check. However, this approach is  unnecessarily complex when we can simply set it to an invalid handle, which skips the override due to the check in the innermost if statement.
+This leaves `m_hThrower`, which we can just set to be an invalid handle in order to get past the innermost if statement.
 
 [^1]: `game/shared/cstrike/basecsgrenade_projectile.cpp` Line 73
 [^2]: A cooporative movement gamemode. Although there doesn't exist any good resources describing Trikz as a whole, there are a lot of videos online showcasing it like [this](https://www.youtube.com/watch?v=rM4t9vF9nRk)
