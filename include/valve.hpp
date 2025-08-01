@@ -125,7 +125,7 @@ namespace valve {
       ( registry_.emplace( names, this ), ... );
     }
 
-    static interface_registry * find( std::string name ) {
+    static interface_registry *find( std::string name ) {
       if ( auto interface = registry_.find( name );
            interface != valve::interface_registry::registry_.end( ) )
         return interface->second;
@@ -133,7 +133,8 @@ namespace valve {
     }
 
   private:
-    inline static std::unordered_map< std::string, interface_registry * > registry_ = { };
+    inline static std::unordered_map< std::string, interface_registry * >
+        registry_ = { };
   };
 
 } // namespace valve
