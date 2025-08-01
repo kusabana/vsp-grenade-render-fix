@@ -1,5 +1,4 @@
 #pragma once
-#include <optional>
 #include <stddef.h>
 #include <stdint.h>
 #include <string>
@@ -41,7 +40,7 @@ namespace valve {
   };
 
   namespace plugin_callbacks {
-    class v4 {
+    class v3 {
     public:
       // called when server loads the plugin
       virtual auto
@@ -114,24 +113,6 @@ namespace valve {
       virtual auto on_edict_allocated( edict *edict ) -> void {}
       // called when an edict is about to be freed
       virtual auto on_edict_freed( const edict *edict ) -> void {}
-
-      virtual auto crypt_required(
-          uint32_t address,
-          uint16_t port,
-          uint32_t account_id,
-          bool client_wants_crypt ) -> bool {
-        return true;
-      }
-      virtual auto crypt_validate(
-          uint32_t address,
-          uint16_t port,
-          uint32_t account_id,
-          int key_index,
-          int encrypted_bytes,
-          uint8_t *buffer,
-          uint8_t *plain_key ) -> bool {
-        return true;
-      }
     };
   } // namespace plugin_callbacks
 
@@ -152,7 +133,7 @@ namespace valve {
     }
 
   private:
-    static std::unordered_map< std::string, interface_registry * > registry_;
+    inline static std::unordered_map< std::string, interface_registry * > registry_ = { };
   };
 
 } // namespace valve

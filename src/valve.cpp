@@ -1,6 +1,5 @@
 #include "valve.hpp"
 #include <string>
-#include <unordered_map>
 
 namespace valve {
   enum class return_code : bool { FAILED, OK };
@@ -14,8 +13,5 @@ namespace valve {
 
     return interface;
   }
-
-  std::unordered_map< std::string, interface_registry * >
-      interface_registry::registry_ = { };
 
 } // namespace valve
