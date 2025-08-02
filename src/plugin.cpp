@@ -52,11 +52,8 @@ auto resolve_symbol( void *handle, const char *name ) -> void * {
     if ( shdr[ i ].sh_type == SHT_SYMTAB ) {
       sym = ( ElfW( Sym ) * ) ( ( char * ) base + shdr[ i ].sh_offset );
       symcount = shdr[ i ].sh_size / sizeof( ElfW( Sym ) );
+      strtab = ( char * ) base + shdr[ shdr[ i ].sh_link ].sh_offset;
 
-      int strtab_index = shdr[ i ].sh_link;
-      if ( strtab_index >= 0 && strtab_index < ( int ) e->e_shnum ) {
-        strtab = ( char * ) base + shdr[ strtab_index ].sh_offset;
-      }
       break;
     }
   }
