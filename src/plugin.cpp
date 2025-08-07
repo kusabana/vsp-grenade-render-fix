@@ -105,10 +105,10 @@ auto grenade_render_fix::load( valve::factory factory, valve::factory )
   if ( !ehandle_to_int_ )
     return false;
 
-  if ( send_table_->props[ THROWER_DT_INDEX ].func != ehandle_to_int_ )
+  if ( send_table_->props[ THROWER_PROP_INDEX ].func != ehandle_to_int_ )
     return false;
 
-  send_table_->props[ THROWER_DT_INDEX ].func =
+  send_table_->props[ THROWER_PROP_INDEX ].func =
       std::bit_cast< void * >( &grenade_render_fix::send_proxy_override );
 
   return true;
@@ -116,7 +116,7 @@ auto grenade_render_fix::load( valve::factory factory, valve::factory )
 
 auto grenade_render_fix::unload( ) -> void {
   if ( send_table_ )
-    send_table_->props[ THROWER_DT_INDEX ].func = ehandle_to_int_;
+    send_table_->props[ THROWER_PROP_INDEX ].func = ehandle_to_int_;
   if ( server_handle_ )
     dlclose( server_handle_ );
 }
