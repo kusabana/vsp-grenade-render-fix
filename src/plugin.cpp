@@ -80,6 +80,7 @@ auto grenade_render_fix::send_proxy_override(
     void *pOut,
     int iElement,
     int objectID ) -> void {
+  // Set pVarData to nullptr so EHandleToInt will serialize INVALID_NETWORKED_EHANDLE_VALUE
   if ( !plugin_instance.is_paused_ )
     pVarData = nullptr;
 
