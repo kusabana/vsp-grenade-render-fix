@@ -28,7 +28,11 @@ auto grenade_render_fix::send_proxy_override(
 
 auto grenade_render_fix::load( valve::factory factory, valve::factory )
     -> bool {
+#if __x86_64__
+  server_handle_ = dlopen( "cstrike/bin/linux64/server_srv.so", RTLD_NOW );
+#else
   server_handle_ = dlopen( "cstrike/bin/server_srv.so", RTLD_NOW );
+#endif
   if ( !server_handle_ )
     return false;
 
