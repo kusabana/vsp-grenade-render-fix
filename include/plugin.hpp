@@ -1,3 +1,5 @@
+#pragma once
+
 #include "valve.hpp"
 
 constexpr std::size_t THROWER_PROP_INDEX = 4;
