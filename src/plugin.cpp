@@ -37,11 +37,11 @@ auto grenade_render_fix::load( valve::factory factory, valve::factory )
     return false;
 
   send_table_ = std::bit_cast< send_table_t * >(
-      resolve_symbol( server_handle_, "_ZN14DT_BaseGrenade11g_SendTableE" ) );
+      sym::resolve( server_handle_, "_ZN14DT_BaseGrenade11g_SendTableE" ) );
   if ( !send_table_ )
     return false;
 
-  ehandle_to_int_ = resolve_symbol(
+  ehandle_to_int_ = sym::resolve(
       server_handle_,
       "_Z22SendProxy_EHandleToIntPK8SendPropPKvS3_P8DVariantii" );
   if ( !ehandle_to_int_ )
