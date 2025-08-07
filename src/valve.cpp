@@ -1,5 +1,4 @@
 #include "valve.hpp"
-#include <string>
 
 namespace valve {
   enum class return_code : bool { FAILED, OK };

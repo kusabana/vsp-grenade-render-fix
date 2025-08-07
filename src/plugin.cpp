@@ -1,11 +1,9 @@
-#include "plugin.hpp"
-#include "symbol.hpp"
 #include <bit>
 #include <cassert>
-#include <cstdio>
-#include <cstring>
 #include <dlfcn.h>
-#include <elf.h>
+
+#include "plugin.hpp"
+#include "symbol.hpp"
 
 grenade_render_fix plugin_instance;
 
