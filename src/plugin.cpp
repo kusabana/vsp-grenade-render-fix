@@ -57,7 +57,7 @@ auto grenade_render_fix::load( valve::factory factory, valve::factory )
 }
 
 auto grenade_render_fix::unload( ) -> void {
-  if ( send_table_ )
+  if ( send_table_ && ehandle_to_int_ )
     send_table_->props[ THROWER_PROP_INDEX ].func = ehandle_to_int_;
   if ( server_handle_ )
     dlclose( server_handle_ );
