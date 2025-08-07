@@ -47,8 +47,7 @@ auto grenade_render_fix::load( valve::factory factory, valve::factory )
   if ( !ehandle_to_int_ )
     return false;
 
-  if ( send_table_->props[ THROWER_PROP_INDEX ].func != ehandle_to_int_ )
-    return false;
+  assert( send_table_->props[ THROWER_PROP_INDEX ].func == ehandle_to_int_ );
 
   send_table_->props[ THROWER_PROP_INDEX ].func =
       std::bit_cast< void * >( &grenade_render_fix::send_proxy_override );
