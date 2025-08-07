@@ -1,5 +1,7 @@
 #include "valve.hpp"
 
+constexpr std::size_t THROWER_DT_INDEX = 4;
+
 struct prop_t {
   char padding_0[ 0x3c ];
   void *func;

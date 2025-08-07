@@ -1,7 +1,6 @@
 #include "plugin.hpp"
 #include <bit>
 #include <cassert>
-#include <cstddef>
 #include <cstdio>
 #include <cstring>
 #include <dlfcn.h>
@@ -11,8 +10,6 @@
 #include <sys/stat.h>
 
 grenade_render_fix plugin_instance;
-
-constexpr std::size_t THROWER_DT_INDEX = 4;
 
 auto resolve_symbol( void *handle, const char *name ) -> void * {
   const struct link_map *lm;
