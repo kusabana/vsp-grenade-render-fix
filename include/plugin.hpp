@@ -1,18 +1,7 @@
 #pragma once
 
+#include "datatable.hpp"
 #include "valve.hpp"
-
-constexpr std::size_t THROWER_PROP_INDEX = 4;
-
-struct prop_t {
-  char padding_0[ 0x3c ];
-  void *func;
-  char padding_1[ 0x10 ];
-};
-
-struct send_table_t {
-  prop_t *props;
-};
 
 class grenade_render_fix
     : public valve::interface_registry
@@ -41,8 +30,9 @@ private:
 private:
   void *server_handle_;
 
-  send_table_t *send_table_;
-  decltype( prop_t::func ) ehandle_to_int_;
+  prop_t *thrower_property_;
+  prop_t *owner_property_;
+  decltype( prop_t::proxy_fn ) ehandle_to_int_;
 
   bool is_paused_;
 };

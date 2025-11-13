@@ -1,5 +1,7 @@
+#include <algorithm>
 #include <bit>
 #include <cassert>
+#include <cstring>
 #include <dlfcn.h>
 
 #include "plugin.hpp"
@@ -34,28 +36,46 @@ auto grenade_render_fix::load( valve::factory factory, valve::factory )
   if ( !server_handle_ )
     return false;
 
-  send_table_ = std::bit_cast< send_table_t * >(
+  const auto send_table = std::bit_cast< data_table_t * >(
       sym::resolve( server_handle_, "_ZN14DT_BaseGrenade11g_SendTableE" ) );
-  if ( !send_table_ )
+  if ( !send_table )
     return false;
 
-  ehandle_to_int_ = sym::resolve(
+  ehandle_to_int_ = ( decltype( prop_t::proxy_fn ) ) sym::resolve(
       server_handle_,
       "_Z22SendProxy_EHandleToIntPK8SendPropPKvS3_P8DVariantii" );
   if ( !ehandle_to_int_ )
     return false;
 
-  assert( send_table_->props[ THROWER_PROP_INDEX ].func == ehandle_to_int_ );
+  auto hierarchy = prop_flat_hierarchy( send_table );
+  auto find_prop_by_name = []( auto &range, const char *name ) -> prop_t * {
+    auto it =
+        std::find_if( range.begin( ), range.end( ), [ name ]( prop_t *prop ) {
+          return prop->name && std::strcmp( prop->name, name ) == 0;
+        } );
+    return it != range.end( ) ? *it : nullptr;
+  };
 
-  send_table_->props[ THROWER_PROP_INDEX ].func =
-      std::bit_cast< void * >( &grenade_render_fix::send_proxy_override );
+  thrower_property_ = find_prop_by_name( hierarchy, "m_hThrower" );
+  owner_property_ = find_prop_by_name( hierarchy, "m_hOwnerEntity" );
 
+  if ( !thrower_property_ || !owner_property_ )
+    return false;
+
+  assert( thrower_property_->proxy_fn == ehandle_to_int_ );
+  assert( owner_property_->proxy_fn == ehandle_to_int_ );
+
+  thrower_property_->proxy_fn = grenade_render_fix::send_proxy_override;
+  owner_property_->proxy_fn = grenade_render_fix::send_proxy_override;
   return true;
 }
 
 auto grenade_render_fix::unload( ) -> void {
-  if ( send_table_ && ehandle_to_int_ )
-    send_table_->props[ THROWER_PROP_INDEX ].func = ehandle_to_int_;
+  if ( thrower_property_ )
+    thrower_property_->proxy_fn = ehandle_to_int_;
+  if ( owner_property_ )
+    owner_property_->proxy_fn = ehandle_to_int_;
+
   if ( server_handle_ )
     dlclose( server_handle_ );
 }
