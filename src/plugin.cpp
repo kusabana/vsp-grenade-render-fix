@@ -62,11 +62,13 @@ auto grenade_render_fix::load( valve::factory factory, valve::factory )
   if ( !thrower_property_ || !owner_property_ )
     return false;
 
-  assert( thrower_property_->proxy_fn == ehandle_to_int_ );
-  assert( owner_property_->proxy_fn == ehandle_to_int_ );
+  if ( thrower_property_->proxy_fn != ehandle_to_int_ ||
+       owner_property_->proxy_fn != ehandle_to_int_ )
+    return false;
 
   thrower_property_->proxy_fn = grenade_render_fix::send_proxy_override;
   owner_property_->proxy_fn = grenade_render_fix::send_proxy_override;
+
   return true;
 }
 
