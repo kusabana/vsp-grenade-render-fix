@@ -44,20 +44,15 @@ struct data_table_t {
 
 class prop_flat_hierarchy {
 public:
-  using iterator = typename std::vector< prop_t * >::iterator;
-  using reverse_iterator = typename std::vector< prop_t * >::reverse_iterator;
-
   explicit prop_flat_hierarchy( data_table_t *root ) { flatten_props( root ); }
 
-  iterator begin( ) { return flattened_props_.begin( ); }
-  iterator end( ) { return flattened_props_.end( ); }
+  auto begin( ) { return flattened_props_.begin( ); }
+  auto end( ) { return flattened_props_.end( ); }
 
-  reverse_iterator rbegin( ) { return flattened_props_.rbegin( ); }
-  reverse_iterator rend( ) { return flattened_props_.rend( ); }
+  auto rbegin( ) { return flattened_props_.rbegin( ); }
+  auto rend( ) { return flattened_props_.rend( ); }
 
 private:
-  std::vector< prop_t * > flattened_props_;
-
   void flatten_props( data_table_t *table ) {
     if ( !table )
       return;
@@ -71,4 +66,6 @@ private:
       }
     }
   }
+
+  std::vector< prop_t * > flattened_props_;
 };
