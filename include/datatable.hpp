@@ -1,5 +1,3 @@
-#include <vector>
-
 constexpr int PROP_TYPE_DT = 6;
 
 class data_table_t;
@@ -40,32 +38,4 @@ struct data_table_t {
   prop_t *props;
   int prop_count;
   const char *table_name;
-};
-
-class prop_flat_hierarchy {
-public:
-  explicit prop_flat_hierarchy( data_table_t *root ) { flatten_props( root ); }
-
-  auto begin( ) { return flattened_props_.begin( ); }
-  auto end( ) { return flattened_props_.end( ); }
-
-  auto rbegin( ) { return flattened_props_.rbegin( ); }
-  auto rend( ) { return flattened_props_.rend( ); }
-
-private:
-  void flatten_props( data_table_t *table ) {
-    if ( !table )
-      return;
-
-    for ( int i = 0; i < table->prop_count; ++i ) {
-      prop_t *prop = &table->props[ i ];
-      flattened_props_.push_back( prop );
-
-      if ( prop->type == PROP_TYPE_DT && prop->table ) {
-        flatten_props( prop->table );
-      }
-    }
-  }
-
-  std::vector< prop_t * > flattened_props_;
 };

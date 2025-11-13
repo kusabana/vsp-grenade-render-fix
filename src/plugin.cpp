@@ -1,4 +1,3 @@
-#include <algorithm>
 #include <bit>
 #include <cassert>
 #include <cstring>
@@ -47,17 +46,32 @@ auto grenade_render_fix::load( valve::factory factory, valve::factory )
   if ( !ehandle_to_int_ )
     return false;
 
-  auto hierarchy = prop_flat_hierarchy( send_table );
-  auto find_prop_by_name = []( auto &range, const char *name ) -> prop_t * {
-    auto it =
-        std::find_if( range.begin( ), range.end( ), [ name ]( prop_t *prop ) {
-          return prop->name && std::strcmp( prop->name, name ) == 0;
-        } );
-    return it != range.end( ) ? *it : nullptr;
+  auto find_prop_by_name = []( data_table_t *table,
+                               const char *name ) -> prop_t * {
+    auto recurse = [ & ]( auto &&self, data_table_t *t ) -> prop_t * {
+      if ( !t )
+        return nullptr;
+
+      // iterate backwards so we don't take baseclass path if we don't have to
+      for ( int i = t->prop_count - 1; i >= 0; --i ) {
+        prop_t *prop = &t->props[ i ];
+
+        if ( prop->name && std::strcmp( prop->name, name ) == 0 )
+          return prop;
+
+        if ( prop->type == PROP_TYPE_DT && prop->table ) {
+          if ( auto *found = self( self, prop->table ) )
+            return found;
+        }
+      }
+      return nullptr;
+    };
+
+    return recurse( recurse, table );
   };
 
-  thrower_property_ = find_prop_by_name( hierarchy, "m_hThrower" );
-  owner_property_ = find_prop_by_name( hierarchy, "m_hOwnerEntity" );
+  thrower_property_ = find_prop_by_name( send_table, "m_hThrower" );
+  owner_property_ = find_prop_by_name( send_table, "m_hOwnerEntity" );
 
   if ( !thrower_property_ || !owner_property_ )
     return false;
