@@ -19,7 +19,7 @@ public:
   auto unpause( ) -> void override { is_paused_ = false; }
 
 private:
-  static auto send_proxy_override(
+  static auto invalid_ehandle_override(
       const void *pProp,
       const void *pStruct,
       const void *pVarData,

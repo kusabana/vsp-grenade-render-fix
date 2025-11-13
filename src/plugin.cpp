@@ -9,7 +9,7 @@
 
 grenade_render_fix plugin_instance;
 
-auto grenade_render_fix::send_proxy_override(
+auto grenade_render_fix::invalid_ehandle_override(
     const void *pProp,
     const void *pStruct,
     const void *pVarData,
@@ -21,7 +21,7 @@ auto grenade_render_fix::send_proxy_override(
   if ( !plugin_instance.is_paused_ )
     pVarData = nullptr;
 
-  std::bit_cast< decltype( &grenade_render_fix::send_proxy_override ) >(
+  std::bit_cast< decltype( prop_t::proxy_fn ) >(
       plugin_instance.ehandle_to_int_ )(
       pProp, pStruct, pVarData, pOut, iElement, objectID );
 }
@@ -66,8 +66,8 @@ auto grenade_render_fix::load( valve::factory factory, valve::factory )
        owner_property_->proxy_fn != ehandle_to_int_ )
     return false;
 
-  thrower_property_->proxy_fn = grenade_render_fix::send_proxy_override;
-  owner_property_->proxy_fn = grenade_render_fix::send_proxy_override;
+  thrower_property_->proxy_fn = grenade_render_fix::invalid_ehandle_override;
+  owner_property_->proxy_fn = grenade_render_fix::invalid_ehandle_override;
 
   return true;
 }
