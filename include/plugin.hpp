@@ -1,18 +1,24 @@
 #pragma once
 
 #include "datatable.hpp"
-#include "valve.hpp"
+#include "interface.hpp"
+#include "plugin_callbacks.hpp"
+
+using source::prop_t;
+using source::data_table;
 
 class grenade_render_fix
-    : public valve::interface_registry
-    , valve::plugin_callbacks::v3 {
+    : public source::auto_interface
+    , source::plugin_callbacks::v3 {
 public:
   grenade_render_fix( ) noexcept
-      : valve::interface_registry( "ISERVERPLUGINCALLBACKS003" ) {};
+      : source::auto_interface( "ISERVERPLUGINCALLBACKS003" ) {};
 
   auto description( ) -> const char * override { return "grenade-render-fix"; };
 
-  auto load( valve::factory factory, valve::factory ) -> bool override;
+  auto
+  load( source::interface_factory_fn factory, source::interface_factory_fn )
+      -> bool override;
   auto unload( ) -> void override;
 
   auto pause( ) -> void override { is_paused_ = true; }
