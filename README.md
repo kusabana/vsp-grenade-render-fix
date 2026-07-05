@@ -30,19 +30,6 @@ int CBaseCSGrenadeProjectile::DrawModel( int flags )
 }
 ```
 
-This is however not desireable for some community servers running custom gamemodes that make use of the grenade projectiles, like Trikz.[^2]
-
-#### The solution
-There are three variables that control whether or not the game will wait before rendering the grenade projectile:
-- `m_flSpawnTime`
-- `m_hThrower`
-- `m_PlayerAnimState`
-
-The `m_flSpawnTime` variable is set by the client. Since the goal is to resolve the issue without any client-side modifications, this option isn't viable.
-
-While `m_PlayerAnimState` might technically be usable, it would require interfering with the animation playback.
-
-This leaves `m_hThrower`, which we can just set to be an invalid handle in order to get past the innermost if statement.
+This is however not desireable for some community servers running custom gamemodes that make use of the grenade projectiles, like Trikz.
 
 [^1]: `game/shared/cstrike/basecsgrenade_projectile.cpp` Line 73
-[^2]: A cooporative movement gamemode. Although there doesn't exist any good resources describing Trikz as a whole, there are a lot of videos online showcasing it like [this](https://www.youtube.com/watch?v=rM4t9vF9nRk)
